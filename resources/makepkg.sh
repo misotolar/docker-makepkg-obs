@@ -9,7 +9,6 @@ if [[ -z "$BUILD_PATH" ]]; then
 fi
 
 cp -r "$BUILD_PATH" /tmp/build
-cd /tmp/build
 
 if [[ -d /tmp/build/keys/pgp ]]; then
     echo '==> Importing PGP keys...'
@@ -22,17 +21,15 @@ else
     fi
 fi
 
-makepkg -o --syncdeps --noconfirm
-
-cd /home/build
+env -C /tmp/build makepkg -o --syncdeps --noconfirm
 
 echo "user=$OBS_USERNAME" >> /home/build/.config/osc/oscrc
 echo "pass=$OBS_PASSWORD" >> /home/build/.config/osc/oscrc
 
-osc checkout "$OBS_PROJECT"
-rsync -avu --delete --exclude=".*" --exclude="*/" /tmp/build/ "/home/build/$OBS_PROJECT/$OBS_PACKAGE"
+PACKAGE_PATH="/home/build/$OBS_PROJECT/$OBS_PACKAGE"
+env -C /home/build osc checkout "$OBS_PROJECT" && cd $PACKAGE_PATH
+rsync -avu --delete --exclude=".*" --exclude="*/" /tmp/build/ .
 
-cd "/home/build/$OBS_PROJECT/$OBS_PACKAGE"
 osc addremove
 if [[ ! -z "$CI_COMMIT_MESSAGE" ]]; then
     osc commit -m "$CI_COMMIT_MESSAGE"
