@@ -1,4 +1,4 @@
-FROM misotolar/makepkg:base-devel-20250202.0.304438
+FROM misotolar/makepkg:base-devel-20250209.0.306557
 
 LABEL maintainer="michal@sotolar.com"
 
