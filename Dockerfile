@@ -1,6 +1,8 @@
-FROM misotolar/makepkg:base-devel-20250330.0.328921
+FROM misotolar/makepkg:base-devel-20250406.0.331908
 
-LABEL maintainer="michal@sotolar.com"
+LABEL org.opencontainers.image.url="https://github.com/misotolar/docker-makepkg-obs"
+LABEL org.opencontainers.image.description="Arch Linux OBS build environment"
+LABEL org.opencontainers.image.authors="Michal Sotolar <michal@sotolar.com>"
 
 COPY resources/config/oscrc /home/build/.config/osc/oscrc
 COPY resources/makepkg.sh /usr/local/bin/makepkg.sh

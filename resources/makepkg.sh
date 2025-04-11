@@ -15,9 +15,9 @@ if [[ -d /tmp/build/keys/pgp ]]; then
     gpg --import /tmp/build/keys/pgp/*.asc
 else
     source PKGBUILD
-    if [[ ${#validpgpkeys[@]} > 0 ]]; then
+    if [[ ${#validpgpkeys[@]} -gt 0 ]]; then
         echo '==> Fetching PGP keys...'
-        gpg --recv-keys ${validpgpkeys[@]}
+        gpg --recv-keys "${validpgpkeys[@]}"
     fi
 fi
 
@@ -27,11 +27,11 @@ echo "user=$OBS_USERNAME" >> /home/build/.config/osc/oscrc
 echo "pass=$OBS_PASSWORD" >> /home/build/.config/osc/oscrc
 
 PACKAGE_PATH="/home/build/$OBS_PROJECT/$OBS_PACKAGE"
-env -C /home/build osc checkout "$OBS_PROJECT" && cd $PACKAGE_PATH
+env -C /home/build osc checkout "$OBS_PROJECT" && cd "$PACKAGE_PATH"
 rsync -avu --delete --exclude=".*" --exclude="*/" /tmp/build/ .
 
 osc addremove
-if [[ ! -z "$CI_COMMIT_MESSAGE" ]]; then
+if [[ -n "$CI_COMMIT_MESSAGE" ]]; then
     osc commit -m "$CI_COMMIT_MESSAGE"
 else
     osc commit -n
