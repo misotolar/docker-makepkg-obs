@@ -1,4 +1,4 @@
-FROM misotolar/makepkg:base-devel-20250406.0.331908
+FROM misotolar/makepkg:base-devel-20250615.0.365905
 
 LABEL org.opencontainers.image.url="https://github.com/misotolar/docker-makepkg-obs"
 LABEL org.opencontainers.image.description="Arch Linux OBS build environment"
